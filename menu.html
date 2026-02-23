@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Teste</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: arial;
+                margin-top: 5%;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+
+            .main {
+                width: 50%;
+            }
+
+            .hero {
+                background-color: #f2f2f2;
+                padding: 20px;
+                text-align: center;
+                border-radius: 8px;
+            }
+
+            .menu h3 {
+                font-size: 16px;
+            }
+
+            .menu {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 20px;
+                gap: 20px;
+            }
+
+            .comidas, .bebidas {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 20px;
+                width: 100%;
+            }
+
+            .comidas h3, .bebidas h3 {
+                font-size: 14px;
+                color: red;
+                font-weight: bold;
+            }
+
+            .comidas p, .bebidas p {
+                font-size: 12px;
+            }
+
+            .card-comida, .card-bebida {
+                min-width: 20%;
+                height: 150px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 5px;
+                border-radius: 8px;
+                border: 1px solid red;
+                gap: 15px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            }
+
+            .preco {
+                font-weight: bold;
+            }
+
+            .footer {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .disabled {
+                padding: 15px;
+                border-radius: 8px;
+                border: 1px solid gray;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+                margin: 60px 0px 15px;
+                background-color: #c9c9c9;
+                color: gray;
+            }
+
+            .btn-finalizar {
+                padding: 15px;
+                border-radius: 8px;
+                border: 1px solid rgb(223, 124, 124);
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+                margin: 60px 0px 15px;
+                background-color: #e48383;
+                color: rgb(255, 255, 255);
+                cursor: pointer;
+            }
+
+            .footer p {
+                font-size: 12px;
+            }
+
+            .selecionado {
+                border: 2px solid rgb(90, 6, 6);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="hero">
+                <h1>Cantina Abstrata</h1>
+            </div>
+
+            <div class="menu">
+                <h3>Lanches disponíveis:</h3>
+
+                <div class="comidas">
+                    <div class="card-comida" onclick="opcoesComidas(this)">
+                        <h3>X Burguer</h3>
+                        <img src="" alt="">
+                        <p>Carne e queijo</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>9,99</p>
+                    </div>
+
+                    <div class="card-comida" onclick="opcoesComidas(this)">
+                        <h3>Pizza</h3>
+                        <img src="" alt="">
+                        <p>Calabresa e queijo</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>13,90</p>
+                    </div>
+
+                    <div class="card-comida" onclick="opcoesComidas(this)">
+                        <h3>Pastel frito</h3>
+                        <img src="" alt="">
+                        <p>Guisado e ovo</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>8,90</p>
+                    </div>
+                </div>
+
+                <div class="bebidas">
+                    <div class="card-bebida" onclick="opcoesComidas(this)">
+                        <h3>Refri lata</h3>
+                        <img src="" alt="">
+                        <p>Coca zero 350ml</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>4,50</p>
+                    </div>
+
+                    <div class="card-bebida" onclick="opcoesComidas(this)">
+                        <h3>Suco natural</h3>
+                        <img src="" alt="">
+                        <p>Suco de uva</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>8,00</p>
+                    </div>
+
+                    <div class="card-bebida" onclick="opcoesComidas(this)">
+                        <h3>Água</h3>
+                        <img src="" alt="">
+                        <p>Água mineral</p>
+                        <p class="preco"><span style="color: red;font-weight: bold;">R$</span>2,50</p>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <button class="disabled" id="btn-finalizar">Finalizar Pedido</button>
+                    <p>Escola Abstrata @ 2026</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            //obter o botao de finalizar
+            let btnFinalizar = document.querySelector('#btn-finalizar');
+
+            //selecionar uma das opcoes de comida ou bebida
+            function opcoesComidas(botao) {
+                const cardComidaSelecionado = document.querySelector('.card-comida.selecionado');
+                const cardBebidaSelecionado = document.querySelector('.card-bebida.selecionado');
+                
+                //verificar se e um cardcomida ou cardbebida
+                if (botao.classList.contains('card-comida')) {
+                    if (cardComidaSelecionado !== null) {
+                        cardComidaSelecionado.classList.remove('selecionado');
+                    }
+                    botao.classList.add('selecionado');
+
+                } else if (botao.classList.contains('card-bebida')) {
+                    if (cardBebidaSelecionado !== null) {
+                        cardBebidaSelecionado.classList.remove('selecionado');
+                    }
+                    botao.classList.add('selecionado');
+                }
+
+                verificarSelecao()
+            }
+
+            //verificar se o usuario selecionou uma comida e uma bebida para habilitar o botao de finalizar
+            function verificarSelecao() {
+                const cardComidaSelecionado = document.querySelector('.card-comida.selecionado');
+                const cardBebidaSelecionado = document.querySelector('.card-bebida.selecionado');
+
+                if (cardComidaSelecionado !== null && cardBebidaSelecionado !== null) {
+                    btnFinalizar.classList.remove('disabled');
+                    btnFinalizar.classList.add('btn-finalizar');
+                }
+            }
+        </script>
+    </body>
+</html>

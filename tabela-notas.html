@@ -23,6 +23,25 @@
         <main>
             <button onclick="clicarBotao()">Incluir novo</button>
 
+            <div id="busca">
+                <label for="selectBusca">Buscar por...</label>
+                <select name="selectBusca" id="selectBusca" onchange="aplicarFiltros(event)">
+                    <option value="">Todos alunos</option>
+                    <option value="aprovados">Alunos aprovados</option>
+                    <option value="reprovados">Alunos reprovados</option>
+                </select>
+            </div>
+
+            <div id="filtro">
+                <label for="selectFiltro">Filtrar por...</label>
+                <select name="selectFiltro" id="selectFiltro" onchange="aplicarFiltros(event)">
+                    <option value="">Selecione...</option>
+                    <option value="maior">Maior nota</option>
+                    <option value="menor">Menor nota</option>
+                    <option value="alfabetico">Alfabético</option>
+                </select>
+            </div>
+
             <div id="incluir" style="display: none;">
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome">
@@ -88,14 +107,14 @@
             }
 
 
-            function popularTabela() {
+            function popularTabela(lista = dados) {
                 const corpoTabela = tabela.querySelector('tbody');
 
                 //limpar o corpo da tabela para receber os dados do array
                 corpoTabela.innerHTML = '';
 
                 //popular a tabela com os dados do array
-                dados.forEach(aluno => {
+                lista.forEach(aluno => {
                     const linha = document.createElement('tr');
 
                     linha.innerHTML = `
@@ -104,24 +123,56 @@
                     `;
 
                     corpoTabela.appendChild(linha);
-
-                    obterAlunos()
                 })
 
+                somarMedia()
+            } 
 
-                function obterAlunos() {
-                    let somaNota = 0;
+            function somarMedia() {
+                let somaNota = 0;
 
-                    for (let i = 0; i < linhas.length; i++) {
-                        let numero = dados[i].nota;
-                        somaNota += numero;
-                    }
-
-                    let mediaNota = somaNota / linhas.length;
-                    let media = document.getElementById('media');
-                    media.innerHTML = Math.floor(mediaNota);
+                for (let i = 0; i < dados.length; i++) {
+                    let numero = Number(dados[i].nota);
+                    somaNota += numero;
                 }
+
+                let mediaNota = somaNota / dados.length;
+                let media = document.getElementById('media');
+                media.innerHTML = Math.floor(mediaNota);
             }
+
+            //juntar os filtros buscar e filtrar para funcionarem ao mesmo tempo
+            function aplicarFiltros(event) {
+                let valorSelecionado = document.getElementById('selectBusca').value;
+                let filtroSelecionado = document.getElementById('selectFiltro').value;
+                let listaFiltrada = [...dados];
+
+                //filtro buscar
+                if (valorSelecionado === 'aprovados') {
+                    listaFiltrada = listaFiltrada.filter((dado) => dado.nota >= 60);
+                } else if (valorSelecionado === 'reprovados') {
+                    listaFiltrada = listaFiltrada.filter((dado) => dado.nota <= 59);
+                }
+
+                //filtro ordenar
+                switch (filtroSelecionado) {
+                    case 'maior':
+                        listaFiltrada.sort((a, b) => b.nota - a.nota);
+                        break
+                    case 'menor':
+                        listaFiltrada.sort((a, b) => a.nota - b.nota);
+                        break
+                    case 'alfabetico':
+                        listaFiltrada.sort((a, b) => a.nome.localeCompare(b.nome));
+                        break
+                    default:
+                        break;
+                }
+
+                popularTabela(listaFiltrada);
+            }
+
+            
         </script>
     </body>
 
